@@ -128,6 +128,7 @@ function push_dotfiles () {
 # adds a loading spinner to the end of the previous line
 # thanks to William Pursell for some of the logic
 # https://stackoverflow.com/questions/12498304/using-bash-to-display-a-progress-working-indicator
+# requires the pid of a running background process
 function spinner() {
   pid=$1 # pid of the previous running command
   spin='-\|/'
