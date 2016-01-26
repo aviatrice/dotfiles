@@ -1,0 +1,15 @@
+repo="/Users/rae/Projects/dotfiles/"
+
+echo "Copying dotfiles"
+sudo cp ~/.bash_profile ${repo}/.bash_profile
+sudo cp ~/.vimrc ${repo}/.vimrc
+sudo cp ~/.push_dotfiles ${repo}/.push_dotfiles
+
+cd ${repo}
+echo "Commiting and pushing to git"
+git add *
+git commit -m "dotfiles update $(date +"%Y-%m-%d %T")"
+git push -u origin master
+
+cd ~
+deactivate &> /dev/null

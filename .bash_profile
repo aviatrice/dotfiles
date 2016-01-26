@@ -12,6 +12,10 @@ source /usr/local/bin/virtualenvwrapper.sh > /dev/null
 # to disable functionality, set this to an empty string or "none"
 project_dir="/Users/rae/Projects"
 
+# script to copy dotfiles to git repo and push them up
+# must be in ~ with the rest of the dotfiles
+git_script=".push_dotfiles"
+
 # a few colors
 RED='\[\e[0;31m\]'
 ORANGE='\[\e[1;31m\]'
@@ -111,6 +115,13 @@ alias fgrep='fgrep --color=auto'
 ################################################################################
 #   UTILITY                                                                    #
 ################################################################################
+
+function push_dotfiles () {
+  wd="$(pwd)"
+  cd ~
+  source ${git_script}
+  cd ${wd}
+}
 
 # adds a loading spinner to the end of the previous line
 # thanks to William Pursell
