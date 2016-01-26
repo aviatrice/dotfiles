@@ -32,10 +32,10 @@ ENDCOLOR='\[\e[0m\]'
 #   COMMAND MODS/BINDINGS                                                      #
 ################################################################################
 
-bind "TAB":menu-complete                ## TAB = autocomplete
-bind '"\e[Z":complete'                  ## SHIFT+TAB show autocomplete options
-bind '"\e[A":history-search-backward'   ## arrow-up: history search
-bind '"\e[B":history-search-forward'    ## arrow-down: history search
+bind "TAB":menu-complete                ## TAB:         autocomplete
+bind '"\e[Z":complete'                  ## SHIFT+TAB:   show autocomplete options
+bind '"\e[A":history-search-backward'   ## arrow-up:    history search
+bind '"\e[B":history-search-forward'    ## arrow-down:  history search
 
 
 ################################################################################
@@ -47,12 +47,12 @@ alias c='clear'
 alias e='echo'
 
 # ls shenanigans
-alias ls='ls -FGhLl' # decorators + colorized + size units + resolve symlinks + list format
-alias lsa='ls -a' # all files
-alias lsc='ls -C' # force multi-column output
-alias lst='lsa -t' # sorted by time
-alias ls.='ls -d .*' # only hidden files
-alias ls@='ls -H' # show symbolic links
+alias ls='ls -FGhLl'  # decorators + colorized + size units + resolve symlinks + list format
+alias lsa='ls -a'     # all files
+alias lsc='ls -C'     # force multi-column output
+alias lst='lsa -t'    # sorted by time
+alias ls.='ls -d .*'  # only hidden files
+alias ls@='ls -H'     # show symbolic links
 
 # easier to move up dirs
 alias ..='cd ..'
@@ -155,7 +155,7 @@ function spinner() {
 
 # takes a path to a dir $1 as argument
 # returns true if in a subdirectory of $1
-# returns false if directly inside $1 or not inside $1
+# returns false if directly inside $1 or outside $1
 function is_parent_dir () {
   IFS='/' # need to reset to '' when done or virtualenvwrapper has a fit
   read -ra dirarray <<< "${PWD}"
@@ -180,7 +180,6 @@ function set_venv () {
   current_dir="$(basename "$PWD")"
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
       workon ${current_dir} > /dev/null
-  # elif [ "$PWD" == "${project_dir}" ]; then
   elif ! is_parent_dir "${project_dir}"; then
       deactivate &> /dev/null
       # TODO: deactivate if moving to any directory not inside the project_dir
@@ -246,7 +245,7 @@ set_git_branch
 function build_branch() {
 	if [[ $git_branch != "" ]]
 	    then
-	      branch=" ${LIGHTGRAY}${B_STATE}[$git_branch$git_dirty]"
+	      branch=" ${B_STATE}[$git_branch$git_dirty]"
 	else
 		  branch=""
 	fi
