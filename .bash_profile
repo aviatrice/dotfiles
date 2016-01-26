@@ -205,12 +205,12 @@ set_git_branch
 
 # build prompt
 function build_branch() {
-  if [[ $git_branch != "" ]]
-      then
-        branch=" ${LIGHTGRAY}${B_STATE}[$git_branch$git_dirty]"
-  else
-      branch=""
-  fi
+	if [[ $git_branch != "" ]]
+	    then
+	      branch=" ${LIGHTGRAY}${B_STATE}[$git_branch$git_dirty]"
+	else
+		  branch=""
+	fi
 }
 
 # example prompt:
