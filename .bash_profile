@@ -147,7 +147,7 @@ function spinner() {
 # returns true if in a subdirectory of $1
 # returns false if directly inside $1 or not inside $1
 function is_parent_dir () {
-  IFS='/'
+  IFS='/' # need to reset to '' when done or virtualenvwrapper has a fit
   read -ra dirarray <<< "${PWD}"
   for i in "${dirarray[@]}"; do
       if [ "$i" == "$(basename $1)" ]; then
@@ -155,7 +155,7 @@ function is_parent_dir () {
         return 1
       fi
   done
-  IFS='' # reset IFS or virtualenvwrapper has a fit
+  IFS=''
   return 0
 }
 
