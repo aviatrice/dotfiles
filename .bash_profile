@@ -141,6 +141,22 @@ function spinner() {
   printf "\bDone.\n"
 }
 
+# takes a path to a dir $1 as argument
+# returns true if in a subdirectory of $1
+# returns false if directly inside $1 or not inside $1
+function in_subdirectory_of () {
+  IFS='/'
+  read -ra dirarray <<< "${PWD}"
+  for i in "${dirarray[@]}"; do
+      if [ "$i" == "$(basename $1)" ]; then
+        IFS=''
+        return 1
+      fi
+  done
+  IFS='' # reset IFS or virtualenvwrapper has a fit
+  return 0
+}
+
 # set virtual environment if one exists w/same name as dir
 # if not, and in subdir of project_dir, create virtualenv
 # deactivate when moving back to project_dir
@@ -152,7 +168,8 @@ function set_venv () {
   current_dir="$(basename "$PWD")"
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
       workon ${current_dir} > /dev/null
-  elif [ "$PWD" == "${project_dir}" ]; then
+  # elif [ "$PWD" == "${project_dir}" ]; then
+  elif ! in_subdirectory_of "${project_dir}"; then
       deactivate &> /dev/null
       # TODO: deactivate if moving to any directory not inside the project_dir
   elif [ "$(dirname $PWD)" == "${project_dir}" ]; then
