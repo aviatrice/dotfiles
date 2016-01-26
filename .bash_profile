@@ -178,6 +178,9 @@ function parse_git_branch () {
   git_branch="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')"
   git_repo="$(git config --local remote.origin.url|sed -n 's#.*/\([^.]*\)\.git#\1#p')"
   if [[ "${git_branch}" != "" && "$(basename $PWD)" != "${git_repo}" ]]; then
+    if [ "${git_repo}" == "" ]; then
+      git_repo="?" # if the branch is defined but not the repo, display a ? as the repo name
+    fi
     git_branch="${git_repo}/${git_branch}"
   fi
 }
