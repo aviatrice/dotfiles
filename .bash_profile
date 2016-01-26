@@ -145,7 +145,7 @@ function spinner() {
 # takes a path to a dir $1 as argument
 # returns true if in a subdirectory of $1
 # returns false if directly inside $1 or not inside $1
-function in_subdirectory_of () {
+function is_parent_dir () {
   IFS='/'
   read -ra dirarray <<< "${PWD}"
   for i in "${dirarray[@]}"; do
@@ -170,7 +170,7 @@ function set_venv () {
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
       workon ${current_dir} > /dev/null
   # elif [ "$PWD" == "${project_dir}" ]; then
-  elif ! in_subdirectory_of "${project_dir}"; then
+  elif ! is_parent_dir "${project_dir}"; then
       deactivate &> /dev/null
       # TODO: deactivate if moving to any directory not inside the project_dir
   elif [ "$(dirname $PWD)" == "${project_dir}" ]; then
