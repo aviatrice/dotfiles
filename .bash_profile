@@ -121,6 +121,7 @@ function push_dotfiles () {
   cd ~
   source ${git_script}
   cd ${wd}
+  # test
 }
 
 # adds a loading spinner to the end of the previous line
@@ -231,8 +232,7 @@ prompt_cmd() {
     parse_git_branch
     set_git_branch
     build_branch
-    export PS1="${LIGHTGRAY}${TITLEBAR}[\D{%I}:\D{%M}:\D{%S}] ${MAGENTA}\u@\h ${BLUE}\w${venv}${branch}\n\
-                \r${LIGHTGRAY}\$ ${ENDCOLOR}"
+    export PS1="${LIGHTGRAY}${TITLEBAR}[\D{%I}:\D{%M}:\D{%S}] ${MAGENTA}\u@\h ${BLUE}\w${venv}${branch}\n${LIGHTGRAY}\$ ${ENDCOLOR}"
 }
 
 PROMPT_COMMAND=prompt_cmd

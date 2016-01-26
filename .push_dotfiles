@@ -11,7 +11,7 @@ sudo cp ~/.vimrc ${repo}/.vimrc
 sudo cp ~/.push_dotfiles ${repo}/.push_dotfiles
 
 cd ${repo}
-git add *
+git add .
 git commit -m "${commit_msg}"
 git push -u origin master
 
