@@ -27,5 +27,3 @@ git push -u origin master
 # function push_dotfiles in .bash_profile automatically returns to original
 # working directory.
 cd ~
-
-# deactivate &> /dev/null
