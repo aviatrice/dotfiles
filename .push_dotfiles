@@ -28,6 +28,4 @@ git push -u origin master
 # working directory.
 cd ~
 
-# since we moved to a project directory the venv activated,
-# need to deactivate
 # deactivate &> /dev/null
