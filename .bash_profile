@@ -116,12 +116,13 @@ alias fgrep='fgrep --color=auto'
 #   UTILITY                                                                    #
 ################################################################################
 
+# switches to ~, sources the dotfiles git script,
+# then switches back to current dir
 function push_dotfiles () {
   wd=$(pwd)
   cd ~
   source ${git_script}
   cd ${wd}
-  # test
 }
 
 # adds a loading spinner to the end of the previous line
