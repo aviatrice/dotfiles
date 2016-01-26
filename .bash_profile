@@ -117,10 +117,10 @@ alias fgrep='fgrep --color=auto'
 ################################################################################
 
 function push_dotfiles () {
-  wd=pwd
+  wd=${pwd}
   cd ~
   source ${git_script}
-  cd "${wd}"
+  cd ${wd}
 }
 
 # adds a loading spinner to the end of the previous line
