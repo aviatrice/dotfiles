@@ -1,5 +1,10 @@
 repo="/Users/rae/Projects/dotfiles/"
 
+commit_msg=$1
+if [ "${commit_msg}" == "" ]; then
+    commit_msg="dotfiles update $(date +"%Y-%m-%d %T")"
+fi
+
 echo "Copying dotfiles"
 sudo cp ~/.bash_profile ${repo}/.bash_profile
 sudo cp ~/.vimrc ${repo}/.vimrc
@@ -8,7 +13,7 @@ sudo cp ~/.push_dotfiles ${repo}/.push_dotfiles
 cd ${repo}
 echo "Commiting and pushing to git"
 git add *
-git commit -m "dotfiles update $(date +"%Y-%m-%d %T")"
+git commit -m "${commit_msg}"
 git push -u origin master
 
 # assumes you were in ~ originally.
