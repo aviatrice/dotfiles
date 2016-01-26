@@ -5,7 +5,7 @@ if [ "${commit_msg}" == "" ]; then
     commit_msg="dotfiles update $(date +"%Y-%m-%d %T")"
 fi
 
-echo "Copying dotfiles"
+echo "Copying dotfiles from ~ to ${repo}"
 sudo cp ~/.bash_profile ${repo}/.bash_profile
 sudo cp ~/.vimrc ${repo}/.vimrc
 sudo cp ~/.push_dotfiles ${repo}/.push_dotfiles
