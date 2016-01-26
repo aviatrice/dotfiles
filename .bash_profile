@@ -117,7 +117,7 @@ alias fgrep='fgrep --color=auto'
 ################################################################################
 
 function push_dotfiles () {
-  wd=${pwd}
+  wd=$(pwd)
   cd ~
   source ${git_script}
   cd ${wd}
@@ -152,10 +152,8 @@ function set_venv () {
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
       workon ${current_dir} > /dev/null
   elif [ "$PWD" == "${project_dir}" ]; then
-      # deactivate command is not found if virtualenvwrapper is not active,
-      # this is expected and ok.
-      # send all output including errors to /dev/null.
       deactivate &> /dev/null
+      # TODO: deactivate if moving to any directory not inside the project_dir
   elif [ "$(dirname $PWD)" == "${project_dir}" ]; then
       printf "Creating virtual environment \"${current_dir}\"..."
       (mkvirtualenv ${current_dir} &> /dev/null) & disown # disown hides output
