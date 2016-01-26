@@ -1,4 +1,4 @@
-Rachael Passov - Dotfiles
+aviatrice - dotfiles
 
 Clone directly into ~
 
