@@ -4,11 +4,11 @@ commit_msg=$1
 if [ "${commit_msg}" == "" ]; then
     printf "Do you want a custom commit message? (y/n) "
     read custom
-    if [ ${custom} == "y" ]; then
+    if [ "${custom}" == "y" ]; then
         printf "Enter commit message: "
         read commit_msg
     fi
-    if [[ ${custom} != "y" || "${commit_msg}" == "" ]]; then
+    if [[ "${custom}" != "y" || "${commit_msg}" == "" ]]; then
         commit_msg="dotfiles update $(date +"%Y-%m-%d %T")"
     fi
 fi
