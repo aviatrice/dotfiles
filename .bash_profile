@@ -67,10 +67,8 @@ alias h='history | tail -11 | head -10'
 # easy-to-read path
 alias path='echo -e ${PATH//:/\\n}'
 
-# reboot / halt / poweroff
+# reboot / shutdown
 alias reboot='sudo /sbin/reboot'
-alias poweroff='sudo /sbin/poweroff'
-alias halt='sudo /sbin/halt'
 alias shutdown='sudo /sbin/shutdown'
 
 # assume auto-resume wget
