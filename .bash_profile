@@ -42,17 +42,22 @@ bind '"\e[B":history-search-forward'    ## arrow-down:  history search
 #   SHELL COMMANDS                                                             #
 ################################################################################
 
+# fast prefs reload
+alias sb='source ~/.bash_profile'
+
 # quicker basic commands
 alias c='clear'
 alias e='echo'
 
 # ls shenanigans
-alias ls='ls -FGhLl'  # decorators + colorized + size units + resolve symlinks + list format
-alias lsa='ls -a'     # all files
-alias lsc='ls -C'     # force multi-column output
-alias lst='lsa -t'    # sorted by time
-alias ls.='ls -d .*'  # only hidden files
-alias ls@='ls -H'     # show symbolic links
+alias ls='ls -FGhLl'        # decorators + colorized + size units + resolve symlinks + list format
+alias lsa='ls -a'           # all files
+alias lsd='\ls -dGhLl */'   # list subdirectories (removes decorators)
+alias ls.='ls -d .*'        # list hidden files
+alias lst='lsa -t'          # sorted by time
+alias lsc='ls -C'           # force multi-column output
+alias ls@='ls -H'           # show symbolic links
+alias lsg='ls | grep'       # grep directory for a filename
 
 # easier to move up dirs
 alias ..='cd ..'
@@ -63,6 +68,8 @@ alias .5='cd ../../../..'
 
 # quick history of last 10 commands
 alias h='history | tail -11 | head -10'
+# timestamps in history:
+export HISTTIMEFORMAT="[%F %T] "
 
 # easy-to-read path
 alias path='echo -e ${PATH//:/\\n}'
@@ -73,6 +80,25 @@ alias shutdown='sudo /sbin/shutdown'
 
 # assume auto-resume wget
 alias wget='wget -c'
+
+# please thank you
+alias please='eval "sudo $(fc -ln -1)"' # run last command w/sudo
+
+# check internet connection
+alias pong='ping -c 4 8.8.8.8'
+
+# output external IP
+alias whatsmyip='dig +short myip.opendns.com @resolver1.opendns.com'
+
+# git
+alias push='git push -u origin'
+
+# hurr
+alias wow='git status'
+alias such='git'
+alias very='git'
+alias so='git'
+alias much='git'
 
 # docker aliases
 alias dockereval='eval $(docker-machine env dev)'
@@ -87,6 +113,7 @@ alias dockerall='dockerstart; dockereval; dockerup'
 
 # app aliases
 alias subl='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
+alias mplayer='/Applications/MPlayer\ OSX\ Extended.app/Contents/Resources/Binaries/mpextended.mpBinaries/Contents/MacOS/mplayer'
 
 # hidden file toggle (Finder)
 alias findershow='defaults write com.apple.finder ShowAllFiles TRUE'
@@ -115,7 +142,7 @@ man() {
             man "$@"
 }
 
-# colorize grep
+# highlight pattern in output of grep, fgrep and egrep
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -123,6 +150,34 @@ alias fgrep='fgrep --color=auto'
 ################################################################################
 #   UTILITY                                                                    #
 ################################################################################
+
+# When this "cd" function gets more than one argument it ignores the "cd" and re-arranges the args
+# so that second arg becomes the command.
+# e.g.
+# "cd log/project/20120330/some.log.gz zless"  ->  "zless log/project/20120330/some.log.gz"
+# "cd lib/Foo/Bar/Baz.pm vi +100"  ->  "vi +100 lib/Foo/Bar/Baz.pm"
+function cd {
+    if [ $# -lt 1 ]; then
+        builtin cd
+    elif [ $# -eq 1 ]; then
+        builtin cd "$1"
+    else
+        cd_arg_1="$1"
+        shift
+        "$@" "$cd_arg_1"
+    fi
+}
+
+# dotfiles management
+conf() {
+        case $1 in
+                bash)       vim ~/.bash_profile && source ~/.bash_profile ;;
+                vim)        vim ~/.vimrc ;;
+                zsh)        vim ~/.zshrc && source ~/.zshrc ;;
+                hosts)      vim /etc/hosts ;;
+                *)          echo "Unknown application: $1" ;;
+        esac
+}
 
 # switches to ~, sources the dotfiles git script,
 # then switches back to current dir
