@@ -68,7 +68,9 @@ alias .5='cd ../../../..'
 
 # quick history of last 10 commands
 alias h='history | tail -11 | head -10'
-# timestamps in history:
+# fast history grep
+alias hs='history | grep'
+# timestamps in history
 export HISTTIMEFORMAT="[%F %T] "
 
 # easy-to-read path
