@@ -73,6 +73,9 @@ alias hs='history | grep'
 # timestamps in history
 export HISTTIMEFORMAT="[%F %T] "
 
+# grep your processes
+alias psg='ps | grep'
+
 # easy-to-read path
 alias path='echo -e ${PATH//:/\\n}'
 
@@ -152,6 +155,12 @@ alias fgrep='fgrep --color=auto'
 ################################################################################
 #   UTILITY                                                                    #
 ################################################################################
+
+# returns the PID of a process
+# process name must be an exact match
+function psfind () {
+  psg $1 | grep ".*\W$1\W.*" | grep -Eo "^\d+"
+}
 
 # When this "cd" function gets more than one argument it ignores the "cd" and re-arranges the args
 # so that second arg becomes the command.
