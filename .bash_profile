@@ -57,7 +57,10 @@ alias ls.='ls -d .*'        # list hidden files
 alias lst='lsa -t'          # sorted by time
 alias lsc='ls -C'           # force multi-column output
 alias ls@='ls -H'           # show symbolic links
-alias lsg='ls | grep'       # grep directory for a filename
+alias lsg='ls | grep -i'    # grep directory for a filename
+
+# copy working directory path to clipboard
+alias cwd='pwd | pbcopy'
 
 # easier to move up dirs
 alias ..='cd ..'
@@ -66,8 +69,8 @@ alias ....='cd ../../..'
 alias .4='cd ../../..'
 alias .5='cd ../../../..'
 
-# quick history of last 10 commands
-alias h='history | tail -11 | head -10'
+# quick history of last 20 commands
+alias h='history | tail -21 | head -20'
 # fast history grep
 alias hs='history | grep'
 # timestamps in history
@@ -184,6 +187,7 @@ conf() {
         case $1 in
                 bash)       vim ~/.bash_profile && source ~/.bash_profile ;;
                 vim)        vim ~/.vimrc ;;
+		crawl)	    subl /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings ;;
                 zsh)        vim ~/.zshrc && source ~/.zshrc ;;
                 hosts)      vim /etc/hosts ;;
                 *)          echo "Unknown application: $1" ;;
