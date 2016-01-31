@@ -60,7 +60,7 @@ alias ls@='ls -H'           # show symbolic links
 alias lsg='ls | grep -i'    # grep directory for a filename
 
 # copy working directory path to clipboard
-alias cwd='pwd | pbcopy'
+alias cwd='printf "%q\n" "$(pwd)" | pbcopy'
 
 # easier to move up dirs
 alias ..='cd ..'
@@ -122,6 +122,7 @@ alias dockerall='dockerstart; dockereval; dockerup'
 # app aliases
 alias subl='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
 alias mplayer='/Applications/MPlayer\ OSX\ Extended.app/Contents/Resources/Binaries/mpextended.mpBinaries/Contents/MacOS/mplayer'
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 
 # hidden file toggle (Finder)
 alias findershow='defaults write com.apple.finder ShowAllFiles TRUE'
