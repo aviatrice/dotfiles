@@ -1,8 +1,15 @@
 repo="/Users/rae/Projects/dotfiles/"
+declare -a files_to_copy=(
+    ".bash_profile"
+    ".vimrc"
+    ".push_dotfiles"
+)
 
-if [ $1 == diff ]; then
-    git --git-dir ${repo}/.git --work-tree ~ diff
-    return
+# if the first arg can be ran as a git command,
+# runs it automatically w/~ as the working tree.
+# ex "push_dotfiles diff" "push_dotfiles status"
+if [[ $1 != [\"\']* ]]; then
+    git --git-dir ${repo}/.git --work-tree ~ $1 && return || &> /dev/null
 fi
 
 commit_msg=$1
@@ -19,9 +26,9 @@ if [ "${commit_msg}" == "" ]; then
 fi
 
 echo "Copying dotfiles from ~ to ${repo}"
-sudo cp ~/.bash_profile ${repo}/.bash_profile
-sudo cp ~/.vimrc ${repo}/.vimrc
-sudo cp ~/.push_dotfiles ${repo}/.push_dotfiles
+for f in "${files_to_copy[@]}"; do
+    sudo cp ~/$f ${repo}/$f
+done
 
 cd ${repo}
 git add .
