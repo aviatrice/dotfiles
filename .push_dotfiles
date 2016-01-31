@@ -1,5 +1,7 @@
 repo="/Users/rae/Projects/dotfiles/"
 
+# hi
+
 commit_msg=$1
 if [ "${commit_msg}" == "" ]; then
     printf "Do you want a custom commit message? (y/n) "
