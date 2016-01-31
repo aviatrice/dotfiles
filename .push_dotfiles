@@ -9,7 +9,7 @@ declare -a files_to_copy=(
 # runs it automatically w/~ as the working tree.
 # ex "push_dotfiles diff" "push_dotfiles status"
 if [[ $1 != [\"\']* ]]; then
-    git --git-dir ${repo}/.git --work-tree ~ $1 && return || &> /dev/null
+    git --git-dir ${repo}/.git --work-tree ~ $1 && return 2> /dev/null
 fi
 
 commit_msg=$1
