@@ -1,6 +1,9 @@
 repo="/Users/rae/Projects/dotfiles/"
 
-# hi
+if [ $1 == diff ]; then
+    git --git-dir ${repo}/.git --work-tree ~ diff
+    return
+fi
 
 commit_msg=$1
 if [ "${commit_msg}" == "" ]; then

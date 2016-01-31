@@ -188,7 +188,7 @@ conf() {
         case $1 in
                 bash)       vim ~/.bash_profile && source ~/.bash_profile ;;
                 vim)        vim ~/.vimrc ;;
-		crawl)	    subl /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings ;;
+		crawl)	    cd /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings && subl . ;;
                 zsh)        vim ~/.zshrc && source ~/.zshrc ;;
                 hosts)      vim /etc/hosts ;;
                 *)          echo "Unknown application: $1" ;;
