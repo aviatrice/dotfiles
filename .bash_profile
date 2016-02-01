@@ -195,7 +195,7 @@ conf() {
         case "$1" in
                 bash)       vim ~/.bash_profile && source ~/.bash_profile ;;
                 vim)        vim ~/.vimrc ;;
-		            crawl)	    cd /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings && subl . ;;
+                crawl)	    cd /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings && subl . ;;
                 zsh)        vim ~/.zshrc && source ~/.zshrc ;;
                 hosts)      vim /etc/hosts ;;
                 *)          echo "Unknown application: $1" >&2 ;;
@@ -232,17 +232,12 @@ function spinner() {
 # takes a path to a dir $1 as argument
 # returns true if in a subdirectory of $1
 # returns false if directly inside $1 or outside $1
-function is_parent_dir () {
-  IFS='/' # need to reset to '' when done or virtualenvwrapper has a fit
-  read -ra dirarray <<< "${PWD}"
-  for i in "${dirarray[@]}"; do
-      if [ "$i" == "$(basename "$1")" ]; then
-        IFS=''
-        return 1
-      fi
-  done
-  IFS=''
-  return 0
+function in_subdir () {
+  if [[ "${PWD%/*}" =~ "$1" ]]; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 # set virtual environment if one exists w/same name as dir
@@ -256,7 +251,7 @@ function set_venv () {
   current_dir="$(basename "$PWD")"
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
       workon "${current_dir}" > /dev/null
-  elif ! is_parent_dir "${project_dir%/*}"; then
+  elif ! in_subdir "${project_dir}"; then
       deactivate &> /dev/null
   elif [ "$(dirname $PWD)" == "${project_dir}" ]; then
       printf "Creating virtual environment \"${current_dir}\"..."
