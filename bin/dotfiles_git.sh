@@ -96,6 +96,4 @@ fi
 # if the first arg can be ran as a git command,
 # runs it automatically w/~ as the working tree.
 # ex "dotfiles_git diff" "dotfiles_git status"
-git --git-dir ${repo}/.git --work-tree ~ $1
-    && exit 0
-    || exit "Failed to run git command"
+git --git-dir ${repo}/.git --work-tree $HOME $@

@@ -40,7 +40,6 @@ bind '"\e[Z":complete'                  ## SHIFT+TAB:   show autocomplete option
 bind '"\e[A":history-search-backward'   ## arrow-up:    history search
 bind '"\e[B":history-search-forward'    ## arrow-down:  history search
 
-
 ################################################################################
 #   SYSTEM SHORTCUTS                                                           #
 ################################################################################
