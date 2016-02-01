@@ -96,4 +96,10 @@ fi
 # if the first arg can be ran as a git command,
 # runs it automatically w/~ as the working tree.
 # ex "dotfiles_git diff" "dotfiles_git status"
-git --git-dir ${repo}/.git --work-tree $HOME $@
+if [[ ! -f "$HOME/README.md" && "$1" == "diff" ]]; then # don't diff changes to README if there isn't one in $HOME
+    git --git-dir ${repo}/.git --work-tree $HOME update-index --assume-unchanged README.md
+    git --git-dir ${repo}/.git --work-tree $HOME $@
+    git --git-dir ${repo}/.git --work-tree $HOME update-index --no-assume-unchanged README.md
+else
+    git --git-dir ${repo}/.git --work-tree $HOME $@
+fi
