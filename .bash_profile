@@ -56,6 +56,9 @@ alias dotfiles_git='bash dotfiles_git.sh'
 # .bashrc and .bash_profile must be symlinked
 alias b='bash'
 
+# reload prefs without leaving the current shell
+alias sb='source ~/.bash_profile'
+
 # quicker basic commands
 alias c='clear'
 alias e='echo'
