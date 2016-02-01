@@ -1,6 +1,9 @@
 # per virtualenvwrapper
 source /usr/local/bin/virtualenvwrapper.sh > /dev/null
 
+# allow running scripts from $HOME/bin
+chmod +x "$HOME/bin/."
+
 ################################################################################
 #   GLOBAL VARIABLES                                                           #
 ################################################################################
@@ -14,7 +17,7 @@ project_dir="$HOME/Projects"
 
 # script to copy dotfiles to git repo and push them up
 # must be in ~ with the rest of the dotfiles
-git_script=".push_dotfiles"
+git_script="dotfiles_git.sh"
 
 # a few colors
 RED='\[\e[0;31m\]'
@@ -43,14 +46,15 @@ bind '"\e[B":history-search-forward'    ## arrow-down:  history search
 ################################################################################
 
 alias p='cd ${project_dir}'
-
+alias dotfiles_git='bash dotfiles_git.sh'
 
 ################################################################################
 #   SHELL COMMANDS                                                             #
 ################################################################################
 
 # fast prefs reload
-alias sb='source ~/.bash_profile'
+# .bashrc and .bash_profile must be symlinked
+alias b='bash'
 
 # quicker basic commands
 alias c='clear'
@@ -202,14 +206,13 @@ conf() {
         esac
 }
 
-# switches to ~, sources the dotfiles git script,
-# then switches back to current dir
-function push_dotfiles () {
-  wd=$(pwd)
-  cd
-  source ${git_script}
-  cd ${wd}
-}
+# runs the dotfiles git script
+# function dotfiles_git () {
+#   # wd=$(pwd)
+#   # cd
+#   bash ${git_script}
+#   # cd ${wd}
+# }
 
 # adds a loading spinner to the end of the previous line
 # thanks to William Pursell for some of the logic
@@ -342,6 +345,10 @@ PROMPT_COMMAND=prompt_cmd
 # add $HOME/.bin if it's not already in the path
 if [[ ":$PATH:" != *":$HOME/.bin:"* ]]; then
   export PATH="$HOME/.bin:$PATH"
+fi
+# add $HOME/bin if it's not already in the path
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+  export PATH="$HOME/bin:$PATH"
 fi
 
 # Use bash-completion, if available
