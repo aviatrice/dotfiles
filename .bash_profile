@@ -10,7 +10,7 @@ source /usr/local/bin/virtualenvwrapper.sh > /dev/null
 # existing virtualenvs by the same name as an immediate subdirectory will be automatically switched to
 # changing to this directory deactivates all virtualenvs
 # to disable functionality, set this to an empty string or "none"
-project_dir="/Users/rae/Projects"
+project_dir="$HOME/Projects"
 
 # script to copy dotfiles to git repo and push them up
 # must be in ~ with the rest of the dotfiles
@@ -36,6 +36,13 @@ bind "TAB":menu-complete                ## TAB:         autocomplete
 bind '"\e[Z":complete'                  ## SHIFT+TAB:   show autocomplete options
 bind '"\e[A":history-search-backward'   ## arrow-up:    history search
 bind '"\e[B":history-search-forward'    ## arrow-down:  history search
+
+
+################################################################################
+#   SYSTEM SHORTCUTS                                                           #
+################################################################################
+
+alias p='cd ${project_dir}'
 
 
 ################################################################################
@@ -163,7 +170,7 @@ alias fgrep='fgrep --color=auto'
 # returns the PID of a process
 # process name must be an exact match
 function psfind () {
-  psg $1 | grep ".*\W$1\W.*" | grep -Eo "^\d+"
+  psg "$1" | grep -E ".*\W$1\W.*" | grep -Eo "^\d+"
 }
 
 # When this "cd" function gets more than one argument it ignores the "cd" and re-arranges the args
@@ -185,13 +192,13 @@ function cd {
 
 # dotfiles management
 conf() {
-        case $1 in
+        case "$1" in
                 bash)       vim ~/.bash_profile && source ~/.bash_profile ;;
                 vim)        vim ~/.vimrc ;;
-		crawl)	    cd /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings && subl . ;;
+		            crawl)	    cd /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings && subl . ;;
                 zsh)        vim ~/.zshrc && source ~/.zshrc ;;
                 hosts)      vim /etc/hosts ;;
-                *)          echo "Unknown application: $1" ;;
+                *)          echo "Unknown application: $1" >&2 ;;
         esac
 }
 
@@ -199,7 +206,7 @@ conf() {
 # then switches back to current dir
 function push_dotfiles () {
   wd=$(pwd)
-  cd ~
+  cd
   source ${git_script}
   cd ${wd}
 }
@@ -229,7 +236,7 @@ function is_parent_dir () {
   IFS='/' # need to reset to '' when done or virtualenvwrapper has a fit
   read -ra dirarray <<< "${PWD}"
   for i in "${dirarray[@]}"; do
-      if [ "$i" == "$(basename $1)" ]; then
+      if [ "$i" == "$(basename "$1")" ]; then
         IFS=''
         return 1
       fi
@@ -248,13 +255,12 @@ function set_venv () {
   fi
   current_dir="$(basename "$PWD")"
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
-      workon ${current_dir} > /dev/null
-  elif ! is_parent_dir "${project_dir}"; then
+      workon "${current_dir}" > /dev/null
+  elif ! is_parent_dir "${project_dir%/*}"; then
       deactivate &> /dev/null
-      # TODO: deactivate if moving to any directory not inside the project_dir
   elif [ "$(dirname $PWD)" == "${project_dir}" ]; then
       printf "Creating virtual environment \"${current_dir}\"..."
-      (mkvirtualenv ${current_dir} &> /dev/null) & disown # disown hides output
+      (mkvirtualenv "${current_dir}" &> /dev/null) & disown # disown hides output
       spinner $! # pass last pid to spinner()
       prompt_cmd # updates prompt with newly created virtualenv
   fi

@@ -1,4 +1,4 @@
-repo="/Users/rae/Projects/dotfiles/"
+repo="$HOME/Projects/dotfiles/"
 declare -a files_to_copy=(
     ".bash_profile"
     ".vimrc"
@@ -8,9 +8,7 @@ declare -a files_to_copy=(
 # if the first arg can be ran as a git command,
 # runs it automatically w/~ as the working tree.
 # ex "push_dotfiles diff" "push_dotfiles status"
-if [[ $1 != [\"\']* ]]; then
-    git --git-dir ${repo}/.git --work-tree ~ $1 2> /dev/null && return
-fi
+git --git-dir ${repo}/.git --work-tree ~ $1 2> /dev/null && return
 
 commit_msg=$1
 if [ "${commit_msg}" == "" ]; then
@@ -38,4 +36,4 @@ git push -u origin master
 # assumes you were in ~ originally.
 # function push_dotfiles in .bash_profile automatically returns to original
 # working directory.
-cd ~
+cd $HOME
