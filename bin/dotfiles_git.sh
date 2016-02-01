@@ -64,6 +64,7 @@ if [ "$1" == "push" ]; then
     # for f in ${repo}/**/{.,}*
     ## todo: loop through $HOME and find existing files in desired subdirs
     ## add these to keep_paths along with anything in copy_paths
+    ## then re-enable this line to check all files in subdirs for removal as well
 
     ## loop through repo and immediate subdirectories
     keep_paths=${copy_paths[@]}
@@ -74,9 +75,9 @@ if [ "$1" == "push" ]; then
         # exclude from removal: ., .., and anything in $ignore_paths
         omit_regex=$( IFS=$'|'; echo "${ignore_paths[*]}" )
         if ! [[ "$path" =~ .*(\.{1,2}|$omit_regex)$ ]]; then
-            rootdir=${path%%/*}
-            if ! contains "$rootdir" ${keep_paths[@]}; then
-                printf "Do you want to remove $rootdir from $repo? (y/n) "
+            pathroot=${path%%/*}
+            if ! contains "$pathroot" ${keep_paths[@]}; then
+                printf "Do you want to remove $path from $repo? (y/n) "
                 read remove
                 if [ "$remove" == "y" ]; then
                     rm -rf $repo/$path && echo "Removed $repo/$path" || echo "Failed to remove $repo/$path"
