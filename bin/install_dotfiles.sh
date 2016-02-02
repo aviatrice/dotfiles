@@ -12,6 +12,12 @@
 GRAY=$LIGHTGRAY
 EC=$ENDCOLOR
 
+# source environment variables if running in a subshell
+if [[ ! ${SYMLINKS[@]} ]]; then
+    printf "${GRAY}Sourcing environment variables...${ENDCOLOR}\n"
+    source $HOME/lib/environment.sh
+fi
+
 ##########
 
 printf "${GRAY}Installing dotfiles...${EC}\n"
@@ -43,8 +49,8 @@ fi
 
 # move any existing dotfiles in $HOME to $DOTFILES_BACKUP_DIR
 # create symlinks from $HOME to any files in $DOTFILES_DIR specified in $symlinks
-for link_path in ${!symlinks[@]}; do
-    for target in ${symlinks["$link_path"]}; do
+for link_path in ${!SYMLINKS[@]}; do
+    for target in ${SYMLINKS["$link_path"]}; do
         # backup existing dotfile if needed
         if [[ -e "$HOME/$target" && ! -L "$HOME/$target" ]]; then
             printf "${GRAY}Backing up ${WHITE}"$target" ${GRAY}..."

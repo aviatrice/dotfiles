@@ -6,9 +6,18 @@
 ################################################################################
 
 # allow running scripts from $HOME/bin and $HOME/lib
-chmod +x "$HOME/bin/." "$HOME/lib/."
 # source all files in $HOME/lib
-for f in $HOME/lib/*; do if [ -x $f ]; then source $f; fi; done
+for f in $HOME/bin/*; do
+  if [[ -f $f && -x $f ]]; then
+    chmod +x $f
+  fi
+done
+for f in $HOME/lib/*; do
+  if [[ -f $f && -x $f ]]; then
+    chmod +x $f
+    source $f
+  fi
+done
 
 ################################################################################
 #   INIT                                                                       #
