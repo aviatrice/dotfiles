@@ -2,15 +2,18 @@
 >A bunch of stuff to make life easier and better looking.
 
 #### Installation
-1. Set your main projects directory in `lib/environment.d/dirs.sh / $PROJECT_DIR`
+<ol>
+    <li>Set your main projects directory in `lib/environment.d/dirs.sh / $PROJECT_DIR`</li>
+    <li>Clone anywhere, set any variables with undesired defaults in `lib/environment.d`</li>
+</ol>
 
-2. Clone anywhere, set any variables with undesired defaults in `lib/environment.d`:
+| LOC          | VAR                    | DESC                                                                                                                         |
+|--------------|------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| `dirs.sh`    | `$DOTFILES_REPO`       | `$PROJECT_DIR/dotfiles`                                                                                                      |
+| `dirs.sh`    | `$DOTFILES_DIR`        | `$HOME/.dotfiles`; maps paths from `$DOTFILES_REPO` to desired symlinks in `$HOME`; for files such as `.bashrc` and `.vimrc` |
+| `dirs.sh`    | `$DOTFILES_BACKUP_DIR` | `$HOME/.dotfiles.bak`                                                                                                        |
+| `install.sh` | `$SYMLINKS`            | maps paths from `$DOTFILES_REPO` to desired symlinks in `$HOME`; for files such as `.bashrc` and `.vimrc`                    |
 
-- `dirs.sh / $DOTFILES_REPO` - default `$PROJECT_DIR/dotfiles`
-- `dirs.sh / $DOTFILES_DIR` - default `$HOME/.dotfiles`
-    - if different from `$DOTFILES_REPO`, symlinked during install
-- `dirs.sh / $DOTFILES_BACKUP_DIR` - default `$HOME/.dotfiles.bak`
-- `install.sh / $SYMLINKS` - maps paths from `$DOTFILES_REPO` to desired symlinks in `$HOME`
-    - for files such as `.bashrc` and `.vimrc`
-
-3. Run `bin/install_dotfiles.sh` to install.
+<ol start=3>
+    <li>Run `bin/install_dotfiles.sh` to install.</li>
+</ol>
