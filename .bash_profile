@@ -1,22 +1,14 @@
+# todo: break up into sections
+# move functions to lib/
+
 ################################################################################
-#   GLOBAL VARIABLES                                                           #
+#   LIB/BIN                                                                    #
 ################################################################################
 
-# PROJECT_DIR controls virtualenv behavior, among other things
-# set this to your main programming projects dir
-export PROJECT_DIR="$HOME/Projects"
-
-# a few colors
-export RED='\e[0;31m'
-export ORANGE='\e[1;31m'
-export GREEN='\e[0;32m'
-export YELLOW='\e[0;33m'
-export BLUE='\e[0;34m'
-export MAGENTA='\e[0;35m'
-export CYAN='\e[0;36m'
-export LIGHTGRAY='\e[0;37m'
-export WHITE='\e[1;37m'
-export ENDCOLOR='\e[0m'
+# allow running scripts from $HOME/bin and $HOME/lib
+chmod +x "$HOME/bin/." "$HOME/lib/."
+# source all files in $HOME/lib
+for f in $HOME/lib/*; do if [ -x $f ]; then source $f; fi; done
 
 ################################################################################
 #   INIT                                                                       #
@@ -27,10 +19,6 @@ printf "${RED}"
 
 # virtualenvwrapper
 source /usr/local/bin/virtualenvwrapper.sh > /dev/null
-
-# allow running scripts from $HOME/bin
-chmod +x "$HOME/bin/." "$HOME/lib/."
-. $HOME/lib/*
 
 # add $HOME/.bin if it's not already in the path
 if [[ ":$PATH:" != *":$HOME/.bin:"* ]]; then
@@ -192,6 +180,12 @@ alias fgrep='fgrep --color=auto'
 ################################################################################
 #   UTILITY                                                                    #
 ################################################################################
+
+# eventually will allow accessing git in any Project subdir by name, pushing easily, etc
+function pgit () {
+  echo "in pgit"
+}
+export pgit
 
 # returns the PID of a process
 # process name must be an exact match

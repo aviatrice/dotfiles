@@ -1,18 +1,20 @@
+#!/bin/bash
+
 ################################################################################
 #   CUSTOM PROMPT                                                              #
 ################################################################################
 
 # escaped color codes
-RED='\[\e[0;31m\]'
-ORANGE='\[\e[1;31m\]'
-GREEN='\[\e[0;32m\]'
-YELLOW='\[\e[0;33m\]'
-BLUE='\[\e[0;34m\]'
-MAGENTA='\[\e[0;35m\]'
-CYAN='\[\e[0;36m\]'
-LIGHTGRAY='\[\e[0;37m\]'
-WHITE='\[\e[1;37m\]'
-ENDCOLOR='\[\e[0m\]'
+PROMPT_RED="\[${RED}\]"
+PROMPT_ORANGE="\[${ORANGE}\]"
+PROMPT_GREEN="\[${GREEN}\]"
+PROMPT_YELLOW="\[${YELLOW}\]"
+PROMPT_BLUE="\[${BLUE}\]"
+PROMPT_MAGENTA="\[${MAGENTA}\]"
+PROMPT_CYAN="\[${CYAN}\]"
+PROMPT_LIGHTGRAY="\[${LIGHTGRAY}\]"
+PROMPT_WHITE="\[${WHITE}\]"
+PROMPT_EC="\[${ENDCOLOR}\]"
 
 # get virtual env
 function get_venv () {
@@ -49,12 +51,12 @@ function set_git_branch () {
   git_dirty=""
   # set color based on clean/staged/dirty
   if [[ ${git_status} =~ .*"working directory clean".* ]]; then
-    B_STATE="${GREEN}"
+    B_STATE="${PROMPT_GREEN}"
   elif [[ ${git_status} =~ .*"Changes to be committed".* ]]; then
-    B_STATE="${YELLOW}"
+    B_STATE="${PROMPT_YELLOW}"
     git_dirty="*"
   else
-    B_STATE="${RED}"
+    B_STATE="${PROMPT_RED}"
     git_dirty="*"
   fi
 }
@@ -79,7 +81,7 @@ prompt_cmd() {
     parse_git_branch
     set_git_branch
     build_branch
-    export PS1="${LIGHTGRAY}${TITLEBAR}[\D{%I}:\D{%M}:\D{%S}] ${MAGENTA}\u@\h ${BLUE}\w${venv}${branch}\n${LIGHTGRAY}\$ ${ENDCOLOR}"
+    export PS1="${PROMPT_LIGHTGRAY}${TITLEBAR}[\D{%I}:\D{%M}:\D{%S}] ${PROMPT_MAGENTA}\u@\h ${PROMPT_BLUE}\w${venv}${branch}\n${PROMPT_LIGHTGRAY}\$ ${PROMPT_EC}"
 }
 
 PROMPT_COMMAND=prompt_cmd
