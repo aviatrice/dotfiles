@@ -7,7 +7,7 @@
 
 ########## Variables
 
-source_repo="$HOME/Projects/dotfiles"   # git repository where dotfiles are kept (can be same as $dotfiles_dir)
+source_repo="$PROJECT_DIR/dotfiles"     # git repository where dotfiles are kept (can be same as $dotfiles_dir)
 dotfiles_dir="$HOME/.dotfiles"          # dotfiles directory
 backup_dir="$HOME/.dotfiles.bak"        # old dotfiles backup directory
 
@@ -17,14 +17,12 @@ declare -A symlinks=(
     [".bash_profile"]=".bash_profile .bashrc"
     [".vimrc"]=".vimrc"
     ["bin"]="bin"
+    ["lib"]="lib"
 )
 
-# for colored output
-WHITE='\e[1;37m'
-GRAY='\e[0;37m'
-GREEN='\e[0;32m'
-RED='\e[0;31m'
-EC=$ENDCOLOR # shorthand
+# shorthand for colored output
+GRAY=$LIGHTGRAY
+EC=$ENDCOLOR
 
 ##########
 
@@ -64,7 +62,13 @@ for path in ${!symlinks[@]}; do
             subsh_and_delay_output mv "$HOME/$target" "$backup_dir/"
         fi
         if [[ ! "$(readlink "${dotfiles_dir}/${path}")" == "$HOME/$target" ]]; then
-            printf "${GRAY}Linking ${WHITE}$target ${GRAY}-> ${WHITE}${dotfiles_dir#$HOME/}/$path ${GRAY}in $HOME ..."
+            printf ${GRAY}
+            if [ -L "$HOME/$target" ]; then
+                printf "Re-l"
+            else
+                printf "L"
+            fi
+            printf "inking ${WHITE}$target ${GRAY}-> ${WHITE}${dotfiles_dir#$HOME/}/$path ${GRAY}in $HOME ..."
             subsh_and_delay_output ln -shf $dotfiles_dir/$path $HOME/$target
         fi
     done
