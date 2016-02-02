@@ -20,34 +20,38 @@ declare -A symlinks=(
 )
 
 # for nice output
-LIGHTGRAY='\e[0;37m'
 WHITE='\e[1;37m'
+LIGHTGRAY='\e[0;37m'
+GREEN='\e[0;32m'
+RED='\e[0;31m'
 
 ##########
 
-# runs command in a subshell & catches any errors
-# prints "done" or "failed" first, then prints the errors
+printf "${LIGHTGRAY}Installing dotfiles...${ENDCOLOR}\n"
+
+# runs command in a subshell & catches any output
+# prints "done" or "failed" first, then prints the output
 # useful after an echo -n
-# ex:   $ echo -n "Performing task ..."; subsh_and_delay_err task_that_will_fail;
+# ex:   $ echo -n "Performing task ..."; subsh_and_delay_output task_that_will_fail;
 #       $ Performing task ...failed
 #       $ error is printed here
-function subsh_and_delay_err () {
-    err=$( ($@) 2>&1 ) && echo "done" || echo "failed"
-    if [ "$err" ]; then echo "$err"; fi
+function subsh_and_delay_output () {
+    output=$( ($@) 2>&1 ) && printf "${GREEN}done${ENDCOLOR}\n" || printf "${RED}failed${ENDCOLOR}\n"
+    if [ "$output" ]; then printf "${LIGHTGRAY}$output${ENDCOLOR}\n"; fi
 }
 
 # if needed, symlink source repository to $dotfiles_dir
 # otherwise skip and don't spam the terminal w/unneccessary output
 if [[ ! "${source_repo}" == "${dotfiles_dir}" && ! "$(readlink ${dotfiles_dir})" == "$source_repo" ]]; then
-    echo -n "${LIGHTGRAY}Linking ${WHITE}$source_repo ${LIGHTGRAY}-> ${WHITE}$dotfiles_dir ${LIGHTGRAY}..."
-    subsh_and_delay_err ln -shf $source_repo $dotfiles_dir
+    printf "${LIGHTGRAY}Linking ${WHITE}$source_repo ${LIGHTGRAY}-> ${WHITE}$dotfiles_dir ${LIGHTGRAY}..."
+    subsh_and_delay_output ln -shf $source_repo $dotfiles_dir
 fi
 
 # if needed, create $backup_dir in $HOME
 # otherwise skip and don't spam the terminal w/unneccessary output
 if [ ! -e $backup_dir ]; then
-    echo -n "${LIGHTGRAY}Creating ${WHITE}$backup_dir ${LIGHTGRAY}for backup of any existing dotfiles in $HOME ..."
-    subsh_and_delay_err mkdir -p $backup_dir
+    printf "${LIGHTGRAY}Creating ${WHITE}$backup_dir ${LIGHTGRAY}for backup of any existing dotfiles in $HOME ..."
+    subsh_and_delay_output mkdir -p $backup_dir
 fi
 
 # move any existing dotfiles in $HOME to $backup_dir
@@ -55,14 +59,14 @@ fi
 for path in ${!symlinks[@]}; do
     for target in ${symlinks["$path"]}; do
         if [[ -e "$HOME/$target" && ! -L "$HOME/$target" ]]; then
-            echo -n "${LIGHTGRAY}Backing up ${WHITE}"$target" ${LIGHTGRAY}..."
-            subsh_and_delay_err mv "$HOME/$target" "$backup_dir/"
+            printf "${LIGHTGRAY}Backing up ${WHITE}"$target" ${LIGHTGRAY}..."
+            subsh_and_delay_output mv "$HOME/$target" "$backup_dir/"
         fi
         if [[ ! "$(readlink "${dotfiles_dir}/${path}")" == "$HOME/$target" ]]; then
             printf "${LIGHTGRAY}Linking ${WHITE}$target ${LIGHTGRAY}-> ${WHITE}${dotfiles_dir#$HOME/}/$path ${LIGHTGRAY}in $HOME ..."
-            subsh_and_delay_err ln -shf $dotfiles_dir/$path $HOME/$target
+            subsh_and_delay_output ln -shf $dotfiles_dir/$path $HOME/$target
         fi
     done
 done
 
-printf "${ENDCOLOR}"
+printf "${LIGHTGRAY}Done installing dotfiles.${ENDCOLOR}\n"
