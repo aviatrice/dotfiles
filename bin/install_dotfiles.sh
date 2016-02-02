@@ -19,15 +19,16 @@ declare -A symlinks=(
     ["bin"]="bin"
 )
 
-# for nice output
+# for colored output
 WHITE='\e[1;37m'
-LIGHTGRAY='\e[0;37m'
+GRAY='\e[0;37m'
 GREEN='\e[0;32m'
 RED='\e[0;31m'
+EC=$ENDCOLOR # shorthand
 
 ##########
 
-printf "${LIGHTGRAY}Installing dotfiles...${ENDCOLOR}\n"
+printf "${GRAY}Installing dotfiles...${EC}\n"
 
 # runs command in a subshell & catches any output
 # prints "done" or "failed" first, then prints the output
@@ -36,21 +37,21 @@ printf "${LIGHTGRAY}Installing dotfiles...${ENDCOLOR}\n"
 #       $ Performing task ...failed
 #       $ error is printed here
 function subsh_and_delay_output () {
-    output=$( ($@) 2>&1 ) && printf "${GREEN}done${ENDCOLOR}\n" || printf "${RED}failed${ENDCOLOR}\n"
-    if [ "$output" ]; then printf "${LIGHTGRAY}$output${ENDCOLOR}\n"; fi
+    output=$( ($@) 2>&1 ) && printf "${GREEN}done${EC}\n" || printf "${RED}failed${EC}\n"
+    if [ "$output" ]; then printf "${GRAY}$output${EC}\n"; fi
 }
 
 # if needed, symlink source repository to $dotfiles_dir
 # otherwise skip and don't spam the terminal w/unneccessary output
 if [[ ! "${source_repo}" == "${dotfiles_dir}" && ! "$(readlink ${dotfiles_dir})" == "$source_repo" ]]; then
-    printf "${LIGHTGRAY}Linking ${WHITE}$source_repo ${LIGHTGRAY}-> ${WHITE}$dotfiles_dir ${LIGHTGRAY}..."
+    printf "${GRAY}Linking ${WHITE}$source_repo ${GRAY}-> ${WHITE}$dotfiles_dir ${GRAY}..."
     subsh_and_delay_output ln -shf $source_repo $dotfiles_dir
 fi
 
 # if needed, create $backup_dir in $HOME
 # otherwise skip and don't spam the terminal w/unneccessary output
 if [ ! -e $backup_dir ]; then
-    printf "${LIGHTGRAY}Creating ${WHITE}$backup_dir ${LIGHTGRAY}for backup of any existing dotfiles in $HOME ..."
+    printf "${GRAY}Creating ${WHITE}$backup_dir ${GRAY}for backup of any existing dotfiles in $HOME ..."
     subsh_and_delay_output mkdir -p $backup_dir
 fi
 
@@ -59,14 +60,14 @@ fi
 for path in ${!symlinks[@]}; do
     for target in ${symlinks["$path"]}; do
         if [[ -e "$HOME/$target" && ! -L "$HOME/$target" ]]; then
-            printf "${LIGHTGRAY}Backing up ${WHITE}"$target" ${LIGHTGRAY}..."
+            printf "${GRAY}Backing up ${WHITE}"$target" ${GRAY}..."
             subsh_and_delay_output mv "$HOME/$target" "$backup_dir/"
         fi
         if [[ ! "$(readlink "${dotfiles_dir}/${path}")" == "$HOME/$target" ]]; then
-            printf "${LIGHTGRAY}Linking ${WHITE}$target ${LIGHTGRAY}-> ${WHITE}${dotfiles_dir#$HOME/}/$path ${LIGHTGRAY}in $HOME ..."
+            printf "${GRAY}Linking ${WHITE}$target ${GRAY}-> ${WHITE}${dotfiles_dir#$HOME/}/$path ${GRAY}in $HOME ..."
             subsh_and_delay_output ln -shf $dotfiles_dir/$path $HOME/$target
         fi
     done
 done
 
-printf "${LIGHTGRAY}Done installing dotfiles.${ENDCOLOR}\n"
+printf "${GRAY}Done installing dotfiles.${EC}\n"
