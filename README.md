@@ -7,7 +7,7 @@
     <li>Clone anywhere, set any variables with undesired defaults in <code>lib/environment.d</code></li>
 </ol>
 
--><i>Environment variables used during installation</i><-
+><i>Environment variables used during installation:</i>
 
 | LOC          | VAR                    | DESC                                                                                                                      |
 |--------------|------------------------|---------------------------------------------------------------------------------------------------------------------------|
