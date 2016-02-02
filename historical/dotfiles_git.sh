@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# DOTFILES_GIT COPY VERSION
+
 # get access to .bash_profile functions and variables
 # suppress errors/warnings such as "bind: warning: line editing not enabled"
 source $HOME/.bash_profile 2> /dev/null
