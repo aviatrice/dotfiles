@@ -3,7 +3,7 @@
 
 #### Installation
 <ol>
-    <li>Set your main projects directory in <code>lib/environment.d/dirs.sh / $PROJECT_DIR</code></li>
+    <li>Set your main projects directory in <code>lib/environment.d/dirs.sh / $PROJECT_DIR</code> (default <code>$HOME/Projects</code>)</li>
     <li>Clone anywhere, set any variables with undesired defaults in <code>lib/environment.d</code></li>
 </ol>
 
