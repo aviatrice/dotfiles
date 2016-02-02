@@ -8,11 +8,8 @@ chmod +x "$HOME/bin/."
 #   GLOBAL VARIABLES                                                           #
 ################################################################################
 
-# project_dir controls virtualenv behavior
-# virtualenvs will always be created in immediate subdirectories
-# existing virtualenvs by the same name as an immediate subdirectory will be automatically switched to
-# changing to this directory deactivates all virtualenvs
-# to disable functionality, set this to an empty string or "none"
+# project_dir controls virtualenv behavior, among other things
+# set this to your main programming projects dir
 project_dir="$HOME/Projects"
 
 # script to copy dotfiles to git repo and push them up
@@ -199,7 +196,7 @@ function cd {
 # dotfiles management
 conf() {
         case "$1" in
-                bash)       vim ~/.bash_profile && source ~/.bash_profile ;;
+                bash)       vim ~/.bash_profile && bash ;;
                 vim)        vim ~/.vimrc ;;
                 crawl)	    cd /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings && subl . ;;
                 zsh)        vim ~/.zshrc && source ~/.zshrc ;;
@@ -207,14 +204,6 @@ conf() {
                 *)          echo "Unknown application: $1" >&2 ;;
         esac
 }
-
-# runs the dotfiles git script
-# function dotfiles_git () {
-#   # wd=$(pwd)
-#   # cd
-#   bash ${git_script}
-#   # cd ${wd}
-# }
 
 # adds a loading spinner to the end of the previous line
 # thanks to William Pursell for some of the logic
@@ -267,14 +256,10 @@ function in_dir () {
   fi
 }
 
-# set virtual environment if one exists w/same name as dir
-# if not, and in subdir of project_dir, create virtualenv
-# deactivate when moving back to project_dir
+# set virtual environment if one exists w/same name as $current_dir
+# if not, and in subdir of $project_dir, create virtualenv
+# deactivate when moving back to or out of $project_dir
 function set_venv () {
-  # allow unsetting project_dir to cancel functionality
-  if [[ "${project_dir}" == "" || "${project_dir}" == "none" ]]; then
-    return
-  fi
   current_dir="$(basename "$PWD")"
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
       workon "${current_dir}" > /dev/null
