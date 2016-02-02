@@ -7,12 +7,12 @@
     <li>Clone anywhere, set any variables with undesired defaults in <code>lib/environment.d</code></li>
 </ol>
 
-| LOC          | VAR                    | DESC                                                                                                        |
-|--------------|------------------------|-------------------------------------------------------------------------------------------------------------|
-| `dirs.sh`    | `$DOTFILES_REPO`       | `$PROJECT_DIR/dotfiles`                                                                                     |
-| `dirs.sh`    | `$DOTFILES_DIR`        | `$HOME/.dotfiles`<br>If different from `$DOTFILES_REPO`, symlinked during install                           |
-| `dirs.sh`    | `$DOTFILES_BACKUP_DIR` | `$HOME/.dotfiles.bak`                                                                                       |
-| `install.sh` | `$SYMLINKS`            | Maps paths from `$DOTFILES_REPO` to desired symlinks in `$HOME`<br>For files such as `.bashrc` and `.vimrc` |
+| LOC          | VAR                    | DESC                                                                                                               |
+|--------------|------------------------|--------------------------------------------------------------------------------------------------------------------|
+| `dirs.sh`    | `$DOTFILES_REPO`       | `$PROJECT_DIR/dotfiles`                                                                                            |
+| `dirs.sh`    | `$DOTFILES_DIR`        | `$HOME/.dotfiles`<br><i>If different from `$DOTFILES_REPO`, symlinked during install</i>                           |
+| `dirs.sh`    | `$DOTFILES_BACKUP_DIR` | `$HOME/.dotfiles.bak`                                                                                              |
+| `install.sh` | `$SYMLINKS`            | Maps paths from `$DOTFILES_REPO` to desired symlinks in `$HOME`<br><i>For files such as `.bashrc` and `.vimrc`</i> |
 
 <ol start=3>
     <li>Run <code>bin/install_dotfiles.sh</code> to install.</li>
