@@ -3,8 +3,8 @@
 
 #### Installation
 <ol>
-    <li>Set your main projects directory in `lib/environment.d/dirs.sh / $PROJECT_DIR`</li>
-    <li>Clone anywhere, set any variables with undesired defaults in `lib/environment.d`</li>
+    <li>Set your main projects directory in <code>lib/environment.d/dirs.sh / $PROJECT_DIR</code></li>
+    <li>Clone anywhere, set any variables with undesired defaults in <code>lib/environment.d</code></li>
 </ol>
 
 | LOC          | VAR                    | DESC                                                                                                                         |
