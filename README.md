@@ -7,7 +7,8 @@
     <li>Clone anywhere, set any variables with undesired defaults in <code>lib/environment.d</code></li>
 </ol>
 
-<i>Environment variables used during installation:</i><br>
+<i>Environment variables used during installation:</i>
+
 | LOC          | VAR                    | DESC                                                                                                                      |
 |--------------|------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | `dirs.sh`    | `$DOTFILES_REPO`       | `$PROJECT_DIR/dotfiles`                                                                                                   |
