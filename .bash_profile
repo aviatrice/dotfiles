@@ -1,32 +1,56 @@
-# per virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh > /dev/null
-
-# allow running scripts from $HOME/bin
-chmod +x "$HOME/bin/."
-
 ################################################################################
 #   GLOBAL VARIABLES                                                           #
 ################################################################################
 
-# project_dir controls virtualenv behavior, among other things
+# PROJECT_DIR controls virtualenv behavior, among other things
 # set this to your main programming projects dir
-project_dir="$HOME/Projects"
-
-# script to copy dotfiles to git repo and push them up
-# must be in ~ with the rest of the dotfiles
-git_script="dotfiles_git.sh"
+export PROJECT_DIR="$HOME/Projects"
 
 # a few colors
-RED='\[\e[0;31m\]'
-ORANGE='\[\e[1;31m\]'
-GREEN='\[\e[0;32m\]'
-YELLOW='\[\e[0;33m\]'
-BLUE='\[\e[0;34m\]'
-MAGENTA='\[\e[0;35m\]'
-CYAN='\[\e[0;36m\]'
-LIGHTGRAY='\[\e[0;37m\]'
-WHITE='\[\e[1;37m\]'
-ENDCOLOR='\[\e[0m\]'
+export RED='\e[0;31m'
+export ORANGE='\e[1;31m'
+export GREEN='\e[0;32m'
+export YELLOW='\e[0;33m'
+export BLUE='\e[0;34m'
+export MAGENTA='\e[0;35m'
+export CYAN='\e[0;36m'
+export LIGHTGRAY='\e[0;37m'
+export WHITE='\e[1;37m'
+export ENDCOLOR='\e[0m'
+
+################################################################################
+#   INIT                                                                       #
+################################################################################
+
+# call attention to any errors in this section
+printf "${RED}"
+
+# virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh > /dev/null
+
+# allow running scripts from $HOME/bin
+chmod +x "$HOME/bin/." "$HOME/lib/."
+. $HOME/lib/*
+
+# add $HOME/.bin if it's not already in the path
+if [[ ":$PATH:" != *":$HOME/.bin:"* ]]; then
+  export PATH="$HOME/.bin:$PATH"
+fi
+# add $HOME/bin if it's not already in the path
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+  export PATH="$HOME/bin:$PATH"
+fi
+# add $HOME/lib if it's not already in the path
+if [[ ":$PATH:" != *":$HOME/lib:"* ]]; then
+  export PATH="$HOME/lib:$PATH"
+fi
+
+# Use bash-completion, if available
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  . $(brew --prefix)/etc/bash_completion
+fi
+
+printf "${ENDCOLOR}"
 
 ################################################################################
 #   COMMAND MODS/BINDINGS                                                      #
@@ -41,8 +65,7 @@ bind '"\e[B":history-search-forward'    ## arrow-down:  history search
 #   SYSTEM SHORTCUTS                                                           #
 ################################################################################
 
-alias p='cd ${project_dir}'
-alias dotfiles_git='bash dotfiles_git.sh'
+alias p='cd ${PROJECT_DIR}'
 
 ################################################################################
 #   SHELL COMMANDS                                                             #
@@ -196,10 +219,10 @@ function cd {
 # dotfiles management
 conf() {
         case "$1" in
-                bash)       vim ~/.bash_profile && bash ;;
-                vim)        vim ~/.vimrc ;;
+                bash)       vim $HOME/.bash_profile && bash ;;
+                vim)        vim $HOME/.vimrc ;;
                 crawl)	    cd /Applications/Dungeon\ Crawl\ Stone\ Soup\ -\ Tiles.app/Contents/Resources/settings && subl . ;;
-                zsh)        vim ~/.zshrc && source ~/.zshrc ;;
+                zsh)        vim $HOME/.zshrc && source ~/.zshrc ;;
                 hosts)      vim /etc/hosts ;;
                 *)          echo "Unknown application: $1" >&2 ;;
         esac
@@ -232,6 +255,7 @@ function contains () {
   done
   return 1
 }
+export -f contains
 
 # takes a path to a dir $1 as argument
 # returns true if in a subdirectory of $1
@@ -244,6 +268,7 @@ function in_subdir () {
     return 1
   fi
 }
+export -f in_subdir
 
 # takes a path to a dir $1 as argument
 # returns true if in a subdirectory of $1 or directly inside $1
@@ -255,112 +280,24 @@ function in_dir () {
     return 1
   fi
 }
+export -f in_dir
 
 # set virtual environment if one exists w/same name as $current_dir
-# if not, and in subdir of $project_dir, create virtualenv
-# deactivate when moving back to or out of $project_dir
+# if not, and in subdir of $PROJECT_DIR, create virtualenv
+# deactivate when moving back to or out of $PROJECT_DIR
 function set_venv () {
   current_dir="$(basename "$PWD")"
   if [ -d "$WORKON_HOME/${current_dir}" ]; then
       workon "${current_dir}" > /dev/null
-  elif ! in_subdir "${project_dir}"; then
+  elif ! in_subdir "${PROJECT_DIR}"; then
       deactivate &> /dev/null
-  elif [ "$(dirname $PWD)" == "${project_dir}" ]; then
+  elif [ "$(dirname $PWD)" == "${PROJECT_DIR}" ]; then
       printf "Creating virtual environment \"${current_dir}\"..."
       (mkvirtualenv "${current_dir}" &> /dev/null) & disown # disown hides output
       spinner $! # pass last pid to spinner()
       prompt_cmd # updates prompt with newly created virtualenv
   fi
 }
+export set_venv
 
-################################################################################
-#   CUSTOM PROMPT                                                              #
-################################################################################
-
-# get virtual env
-function get_venv () {
-  if [[ $VIRTUAL_ENV != "" ]]
-      then
-        # strip out the path and just leave the env name
-        venv=" (${VIRTUAL_ENV##*/})"
-  else
-        # In case you don't have one activated
-        venv=''
-  fi
-}
-
-# build git section
-# thanks https://gist.github.com/maumercado for some of the below functions!
-
-# capture the output of the "git status" and "git branch" commands
-# if the repo name doesn't match the dir name, prepend the repo name to the branch name
-function parse_git_branch () {
-  git_branch="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')"
-  git_repo="$(git config --local remote.origin.url|sed -n 's#.*/\([^.]*\)\.git#\1#p')"
-  if [[ "${git_branch}" != "" && "$(basename $PWD)" != "${git_repo}" ]]; then
-    if [ "${git_repo}" == "" ]; then
-      git_repo="?" # if the branch is defined but not the repo, display a ? as the repo name
-    fi
-    git_branch="${git_repo}/${git_branch}"
-  fi
-}
-parse_git_branch
-
-# indicate status of working copy
-function set_git_branch () {
-  git_status="$(git status 2> /dev/null)"
-  git_dirty=""
-  # set color based on clean/staged/dirty
-  if [[ ${git_status} =~ .*"working directory clean".* ]]; then
-    B_STATE="${GREEN}"
-  elif [[ ${git_status} =~ .*"Changes to be committed".* ]]; then
-    B_STATE="${YELLOW}"
-    git_dirty="*"
-  else
-    B_STATE="${RED}"
-    git_dirty="*"
-  fi
-}
-set_git_branch
-
-# build prompt
-function build_branch() {
-	if [[ $git_branch != "" ]]
-	    then
-	      branch=" ${B_STATE}[$git_branch$git_dirty]"
-	else
-		  branch=""
-	fi
-}
-
-# example prompt:
-# [11:10:58] user@hostname ~/current/dir (virtualenv) [gitrepo/gitbranch*]
-# $
-prompt_cmd() {
-    set_venv
-    get_venv
-    parse_git_branch
-    set_git_branch
-    build_branch
-    export PS1="${LIGHTGRAY}${TITLEBAR}[\D{%I}:\D{%M}:\D{%S}] ${MAGENTA}\u@\h ${BLUE}\w${venv}${branch}\n${LIGHTGRAY}\$ ${ENDCOLOR}"
-}
-
-PROMPT_COMMAND=prompt_cmd
-
-################################################################################
-#   INIT                                                                       #
-################################################################################
-
-# add $HOME/.bin if it's not already in the path
-if [[ ":$PATH:" != *":$HOME/.bin:"* ]]; then
-  export PATH="$HOME/.bin:$PATH"
-fi
-# add $HOME/bin if it's not already in the path
-if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-  export PATH="$HOME/bin:$PATH"
-fi
-
-# Use bash-completion, if available
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
+source prompt.sh
