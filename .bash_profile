@@ -5,16 +5,15 @@
 #   LIB/BIN                                                                    #
 ################################################################################
 
-# allow running scripts from $HOME/bin and $HOME/lib
-# source all files in $HOME/lib
+# allow running scripts from $HOME/bin
 for f in $HOME/bin/*; do
-  if [[ -f $f && -x $f ]]; then
+  if [[ -f $f ]]; then
     chmod +x $f
   fi
 done
+# source all files directly in $HOME/lib
 for f in $HOME/lib/*; do
-  if [[ -f $f && -x $f ]]; then
-    chmod +x $f
+  if [[ -f $f ]]; then
     source $f
   fi
 done
@@ -190,33 +189,10 @@ alias fgrep='fgrep --color=auto'
 #   UTILITY                                                                    #
 ################################################################################
 
-# eventually will allow accessing git in any Project subdir by name, pushing easily, etc
-function pgit () {
-  echo "in pgit"
-}
-export pgit
-
 # returns the PID of a process
 # process name must be an exact match
 function psfind () {
   psg "$1" | grep -E ".*\W$1\W.*" | grep -Eo "^\d+"
-}
-
-# When this "cd" function gets more than one argument it ignores the "cd" and re-arranges the args
-# so that second arg becomes the command.
-# e.g.
-# "cd log/project/20120330/some.log.gz zless"  ->  "zless log/project/20120330/some.log.gz"
-# "cd lib/Foo/Bar/Baz.pm vi +100"  ->  "vi +100 lib/Foo/Bar/Baz.pm"
-function cd {
-    if [ $# -lt 1 ]; then
-        builtin cd
-    elif [ $# -eq 1 ]; then
-        builtin cd "$1"
-    else
-        cd_arg_1="$1"
-        shift
-        "$@" "$cd_arg_1"
-    fi
 }
 
 # dotfiles management
@@ -248,6 +224,7 @@ function spinner() {
   done
   printf "\bDone.\n"
 }
+export -f spinner
 
 # check if an array contains a specific string
 function contains () {
@@ -301,6 +278,4 @@ function set_venv () {
       prompt_cmd # updates prompt with newly created virtualenv
   fi
 }
-export set_venv
-
-source prompt.sh
+export -f set_venv

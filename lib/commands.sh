@@ -1,12 +1,12 @@
 #!/bin/bash
 
 ################################################################################
-#   ENVIRONMENT VARIABLES                                                      #
+#   ENHANCED COMMANDS                                                          #
 ################################################################################
 
-# source all files in ./environment.d
+# source all files in ./commands.d
 parent_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
-for f in $parent_path/environment.d/*; do
+for f in $parent_path/commands.d/*; do
     if [[ -f $f ]]; then
         source $f
     fi
