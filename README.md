@@ -10,9 +10,9 @@
 
 <i>Environment variables used during installation:</i>
 
-| LOC          | VAR                    | DESC                                                                                                                      |
-|--------------|------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| `dirs.sh`    | `$DOTFILES_REPO`       | `$PROJECT_DIR/dotfiles`                                                                                                   |
-| `dirs.sh`    | `$DOTFILES_DIR`        | `$HOME/.dotfiles`<br><i>If different from `$DOTFILES_REPO`, symlinked during install</i>                                  |
-| `dirs.sh`    | `$DOTFILES_BACKUP_DIR` | `$HOME/.dotfiles.bak`                                                                                                     |
-| `install.sh` | `$SYMLINKS`            | Maps paths from `$DOTFILES_REPO` to desired symlinks in `$HOME`<br><i>For config files such as `.bashrc` and `.vimrc`</i> |
+| LOC          | VAR                    | DESC                                                                                                                               |
+|--------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| `dirs.sh`    | `$DOTFILES_REPO`       | `$PROJECT_DIR/dotfiles`                                                                                                            |
+| `dirs.sh`    | `$DOTFILES_DIR`        | `$HOME/.dotfiles`<br><i>If different from `$DOTFILES_REPO`, symlinked during install</i>                                           |
+| `dirs.sh`    | `$DOTFILES_BACKUP_DIR` | `$HOME/.dotfiles.bak`                                                                                                              |
+| `install.sh` | `$SYMLINKS`            | Maps paths from `$DOTFILES_REPO` to desired symlinks in `$HOME`<br><i>Ex: `.bash_profile -> $HOME/.bashrc`; `bin -> $HOME/bin`</i> |
