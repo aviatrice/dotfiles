@@ -22,7 +22,7 @@ function dotfiles_git () {
         fi
 
         cd "${DOTFILES_REPO}"
-        git add . && git commit -m "${commit_msg}" && git push && exit 0 || exit 1
+        git add . && git commit -m "${commit_msg}" && git push && return 0 || return 1
     fi
 
     # if the first arg can be ran as a git command,
