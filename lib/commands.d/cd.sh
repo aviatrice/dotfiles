@@ -2,6 +2,7 @@
 
 # When this "cd" function gets more than one argument it ignores the "cd" and re-arranges the args
 # so that second arg becomes the command.
+# Basically, it has become shorthand for running a command in a different dir than the current one.
 # e.g.
 # "cd log/project/20120330/some.log.gz zless"  ->  "zless log/project/20120330/some.log.gz"
 # "cd lib/Foo/Bar/Baz.pm vi +100"  ->  "vi +100 lib/Foo/Bar/Baz.pm"
