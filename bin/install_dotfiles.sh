@@ -25,7 +25,7 @@ printf "${GRAY}Installing dotfiles...${EC}\n"
 # runs command in a subshell & catches any output
 # prints "done" or "failed" first, then prints the output
 # useful after an echo -n
-# ex:   $ echo -n "Performing task ..."; subsh_and_delay_output task_that_will_fail;
+# ex:   $ echo -n "Performing task ..."; subsh_and_delay_output [task_that_will_fail];
 #       $ Performing task ...failed
 #       $ error is printed here
 function subsh_and_delay_output () {
