@@ -9,6 +9,7 @@
 export -A SYMLINKS=(
     [".bash_profile"]=".bash_profile .bashrc"
     [".vimrc"]=".vimrc"
+    [".zshrc"]=".zshrc"
     ["bin"]="bin"
     ["lib"]="lib"
 )

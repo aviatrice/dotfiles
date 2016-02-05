@@ -5,7 +5,7 @@
 ################################################################################
 
 # source all files in ./utility.d
-parent_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
+parent_path=$( cd "$(dirname "${BASH_SOURCE:-$0}")" ; pwd -P )
 for f in $parent_path/utility.d/*; do
     if [[ -f $f ]]; then
         source $f

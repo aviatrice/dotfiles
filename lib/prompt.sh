@@ -5,19 +5,32 @@
 ################################################################################
 
 # escaped color codes
-PROMPT_RED="\[${RED}\]"
-PROMPT_ORANGE="\[${ORANGE}\]"
-PROMPT_GREEN="\[${GREEN}\]"
-PROMPT_YELLOW="\[${YELLOW}\]"
-PROMPT_BLUE="\[${BLUE}\]"
-PROMPT_MAGENTA="\[${MAGENTA}\]"
-PROMPT_CYAN="\[${CYAN}\]"
-PROMPT_LIGHTGRAY="\[${LIGHTGRAY}\]"
-PROMPT_WHITE="\[${WHITE}\]"
-PROMPT_EC="\[${ENDCOLOR}\]"
+if ! [ "${BASH_VERSION}" == "" ]; then
+  PROMPT_RED="\[${RED}\]"
+  PROMPT_ORANGE="\[${ORANGE}\]"
+  PROMPT_GREEN="\[${GREEN}\]"
+  PROMPT_YELLOW="\[${YELLOW}\]"
+  PROMPT_BLUE="\[${BLUE}\]"
+  PROMPT_MAGENTA="\[${MAGENTA}\]"
+  PROMPT_CYAN="\[${CYAN}\]"
+  PROMPT_LIGHTGRAY="\[${LIGHTGRAY}\]"
+  PROMPT_WHITE="\[${WHITE}\]"
+  PROMPT_EC="\[${ENDCOLOR}\]"
+else
+  PROMPT_RED="${RED}"
+  PROMPT_ORANGE="${ORANGE}"
+  PROMPT_GREEN="${GREEN}"
+  PROMPT_YELLOW="${YELLOW}"
+  PROMPT_BLUE="${BLUE}"
+  PROMPT_MAGENTA="${MAGENTA}"
+  PROMPT_CYAN="${CYAN}"
+  PROMPT_LIGHTGRAY="${LIGHTGRAY}"
+  PROMPT_WHITE="${WHITE}"
+  PROMPT_EC="${ENDCOLOR}"
+fi
 
 # get virtual env
-function get_venv () {
+function _get_venv () {
   if [[ $VIRTUAL_ENV != "" ]]
       then
         # strip out the path and just leave the env name
@@ -33,7 +46,7 @@ function get_venv () {
 
 # capture the output of the "git status" and "git branch" commands
 # if the repo name doesn't match the dir name, prepend the repo name to the branch name
-function parse_git_branch () {
+function _parse_git_branch () {
   git_branch="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')"
   git_repo="$(git config --local remote.origin.url|sed -n 's#.*/\([^.]*\)\.git#\1#p')"
   if [[ "${git_branch}" != "" && "$(basename $PWD)" != "${git_repo}" ]]; then
@@ -43,10 +56,10 @@ function parse_git_branch () {
     git_branch="${git_repo}/${git_branch}"
   fi
 }
-parse_git_branch
+_parse_git_branch
 
 # indicate status of working copy
-function set_git_branch () {
+function _set_git_branch () {
   git_status="$(git status 2> /dev/null)"
   git_dirty=""
   # set color based on clean/staged/dirty
@@ -60,10 +73,10 @@ function set_git_branch () {
     git_dirty="*"
   fi
 }
-set_git_branch
+_set_git_branch
 
 # build prompt
-function build_branch() {
+function _build_branch() {
     if [[ $git_branch != "" ]]
         then
           branch=" ${B_STATE}[$git_branch$git_dirty]"
@@ -77,10 +90,10 @@ function build_branch() {
 # $
 prompt_cmd() {
     set_venv
-    get_venv
-    parse_git_branch
-    set_git_branch
-    build_branch
+    _get_venv
+    _parse_git_branch
+    _set_git_branch
+    _build_branch
     export PS1="${PROMPT_LIGHTGRAY}${TITLEBAR}[\D{%I}:\D{%M}:\D{%S}] ${PROMPT_MAGENTA}\u@\h ${PROMPT_BLUE}\w${venv}${branch}\n${PROMPT_LIGHTGRAY}\$ ${PROMPT_EC}"
 }
 
