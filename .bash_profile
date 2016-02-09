@@ -25,18 +25,15 @@ printf "${RED}"
 # virtualenvwrapper
 source /usr/local/bin/virtualenvwrapper.sh > /dev/null
 
-# add $HOME/.bin if it's not already in the path
-if [[ ":$PATH:" != *":$HOME/.bin:"* ]]; then
-  export PATH="$HOME/.bin:$PATH"
-fi
-# add $HOME/bin if it's not already in the path
-if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-  export PATH="$HOME/bin:$PATH"
-fi
-# add $HOME/lib if it's not already in the path
-if [[ ":$PATH:" != *":$HOME/lib:"* ]]; then
-  export PATH="$HOME/lib:$PATH"
-fi
+# add dirs if not already in the path:
+# ~/.bin
+# ~/bin
+# ~/lib
+path_addns=""
+[[ ":$PATH:" != *":$HOME/.bin:"* ]] && path_addns+="$HOME/.bin:"
+[[ ":$PATH:" != *":$HOME/bin:"* ]] && path_addns+="$HOME/bin:"
+[[ ":$PATH:" != *":$HOME/lib:"* ]] && path_addns+="$HOME/lib:"
+[[ $path_addns ]] && export PATH="$path_addns$PATH"
 
 # Use bash-completion, if available
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
