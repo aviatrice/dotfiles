@@ -4,6 +4,7 @@
 #   DOTFILES GIT SHORTCUTS                                                     #
 ################################################################################
 
+# TODO: run this in subshell so cd has no effect
 function dotfiles_git () {
     # special case: 1st argument is "push"
     # asks for commit message or generates generic one before pushing
@@ -21,14 +22,17 @@ function dotfiles_git () {
             fi
         fi
 
+        # temporary: save working dir and return after script runs
+        wd="$PWD"
         cd "${DOTFILES_REPO}"
         git add . && git commit -m "${commit_msg}" && git push && return 0 || return 1
+        cd "$wd"
     fi
 
     # if the first arg can be ran as a git command,
     # runs it automatically w/$HOME as the working tree.
     # ex "dotfiles_git diff" "dotfiles_git status"
-    git --git-dir "${DOTFILES_REPO}/.git" --work-tree $HOME $@
+    git --git-dir "${DOTFILES_REPO}/.git" --work-tree "${DOTFILES_DIR}" $@
 }
 
 export -f dotfiles_git

@@ -15,21 +15,23 @@ alias lsg='ls | grep -i'        # grep directory for a filename
 # list subdirectories (removes decorators)
 function lsd() {
     [ "$1" ] && dir="${1%/}/"
-    \ls -dGhLl "${dir}*/"
-    dir="" # todo: why
+    \ls -dGhLl ${dir}*/
+    dir="" # TODO: why
 }
 
 # list hidden files
 function ls.() {
     [ "$1" ] && dir="${1%/}/"
-    ls -d "${dir}.*"
+    ls -d ${dir}.*
     dir=""
 }
 
 # grep for symlinks and list them w/ symlinks and targets highlighted
 function ls@() {
     [ "$1" ] && dir="${1%/}/"
-    ls -aH $dir | grep -E "\s\w+@.+$" || echo "No symlinks."
+    ls -aH $dir | GREP_COLOR="1;34" \grep -E --color=always "\s\w+@" \
+                | GREP_COLOR="1;35" \grep -E --color=always "\s\S+$" \
+                || echo "No symlinks."
     dir=""
 }
 
