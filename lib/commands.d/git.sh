@@ -40,4 +40,4 @@ function git () {
     fi
 }
 
-export -f git
+# export -f git

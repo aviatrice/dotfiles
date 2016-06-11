@@ -85,11 +85,20 @@ function _build_branch() {
     fi
 }
 
+function _log_history() {
+  if [ "$(id -u)" -ne 0 ]; then
+    echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)" >> ~/.logs/bash/bash-history-$(date "+%Y-%m-%d").log;
+  fi
+}
+
 # example prompt:
 # [11:10:58] user@hostname ~/current/dir (virtualenv) [gitrepo/gitbranch*]
 # $
 prompt_cmd() {
-    set_venv
+    # log last command every time prompt is rebuilt
+    _log_history
+    # build prompt
+    # set_venv - currently broken
     _get_venv
     _parse_git_branch
     _set_git_branch

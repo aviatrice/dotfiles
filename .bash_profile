@@ -19,25 +19,25 @@ done
 #   INIT                                                                       #
 ################################################################################
 
-# call attention to any errors in this section
-printf "${RED}"
+# # call attention to any errors in this section
+# printf "${RED}"
 
-# virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh > /dev/null
+# # virtualenvwrapper
+# source /usr/local/bin/virtualenvwrapper.sh &>/dev/null
 
-# add dirs if not already in the path:
-# ~/.bin
-# ~/bin
-# ~/lib
-path_addns=""
-[[ ":$PATH:" != *":$HOME/.bin:"* ]] && path_addns+="$HOME/.bin:"
-[[ ":$PATH:" != *":$HOME/bin:"* ]] && path_addns+="$HOME/bin:"
-[[ ":$PATH:" != *":$HOME/lib:"* ]] && path_addns+="$HOME/lib:"
-[[ $path_addns ]] && export PATH="$path_addns$PATH"
+# # add dirs if not already in the path:
+# # ~/.bin
+# # ~/bin
+# # ~/lib
+# path_addns=""
+# [[ ":$PATH:" != *":$HOME/.bin:"* ]] && path_addns+="$HOME/.bin:"
+# [[ ":$PATH:" != *":$HOME/bin:"* ]] && path_addns+="$HOME/bin:"
+# [[ ":$PATH:" != *":$HOME/lib:"* ]] && path_addns+="$HOME/lib:"
+# [[ $path_addns ]] && export PATH="$path_addns$PATH"
 
-# Use bash-completion, if available
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
+# # Use bash-completion, if available
+# if [ -f $(brew --prefix)/etc/bash_completion ]; then
+#   . $(brew --prefix)/etc/bash_completion
+# fi
 
-printf "${ENDCOLOR}"
+# printf "${ENDCOLOR}"
