@@ -48,7 +48,7 @@ function _get_venv () {
 # if the repo name doesn't match the dir name, prepend the repo name to the branch name
 function _parse_git_branch () {
   git_branch="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')"
-  git_repo="$(git config --local remote.origin.url|sed -n 's#.*/\([^.]*\)\.git#\1#p')"
+  git_repo="$(git config --local remote.origin.url|sed -n 's/.*\/\(.*\)\.git/\1/p')"
   if [[ "${git_branch}" != "" && "$(basename $PWD)" != "${git_repo}" ]]; then
     if [ "${git_repo}" == "" ]; then
       git_repo="?" # if the branch is defined but not the repo, display a ? as the repo name
@@ -96,7 +96,7 @@ function _log_history() {
 # $
 prompt_cmd() {
     # log last command every time prompt is rebuilt
-    _log_history
+    # _log_history
     # build prompt
     # set_venv - currently broken
     _get_venv
