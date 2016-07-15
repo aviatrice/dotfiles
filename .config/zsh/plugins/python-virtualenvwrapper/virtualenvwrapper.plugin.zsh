@@ -1,9 +1,9 @@
 #!/bin/zsh
 function () {
-	local p="$1"
+	local p
 	for p in "$@"; do
 		[[ -e "$p" ]] || continue
 		source "$p"
 		break
 	done
-} "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"
+} ${commands[virtualenvwrapper.sh]:-"/usr/share/virtualenvwrapper/virtualenvwrapper.sh"}
