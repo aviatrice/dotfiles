@@ -42,6 +42,7 @@ SYSTEM=${SYSTEM:l}
 : ${DE:=generic}
 : ${BROWSER:=google-chrome}
 : ${EDITOR:=nvim}
+export EDITOR
 
 case "$TERM" in
 	xterm|screen) TERM=$TERM-256color ;;
